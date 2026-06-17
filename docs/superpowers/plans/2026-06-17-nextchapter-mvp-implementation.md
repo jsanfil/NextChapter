@@ -53,7 +53,7 @@ These tasks are required before `Task 1: Scaffold Tooling And App Shell`. They p
 **Files:**
 - Create: `docs/superpowers/specs/2026-06-17-nextchapter-ui-design-addendum.md`
 
-- [ ] **Step 1: Create low-fidelity desktop wireframes**
+- [x] **Step 1: Create low-fidelity desktop wireframes**
 
 Add a `## Desktop Wireframes` section to `docs/superpowers/specs/2026-06-17-nextchapter-ui-design-addendum.md`.
 
@@ -65,7 +65,7 @@ The desktop wireframes must show:
 - Current Results grouped into "From your want-to-read shelf" and "New discoveries".
 - Inline actions for shortlist, accept, reject, add to want-to-read, mark read, open detail, and external links.
 
-- [ ] **Step 2: Create low-fidelity mobile wireframes**
+- [x] **Step 2: Create low-fidelity mobile wireframes**
 
 Add a `## Mobile Wireframes` section to the UI design addendum.
 
@@ -76,7 +76,7 @@ The mobile wireframes must show:
 - The same primary canvas surfaces as desktop: Library, Sessions, Current Results, Book Detail, and Settings.
 - Recommendation cards that keep rationale, caveats, and actions readable on a narrow screen.
 
-- [ ] **Step 3: Document the core recommendation flow**
+- [x] **Step 3: Document the core recommendation flow**
 
 Add a `## Core Flow` section to the UI design addendum.
 
@@ -94,7 +94,7 @@ Document this sequence:
 **Files:**
 - Modify: `docs/superpowers/specs/2026-06-17-nextchapter-ui-design-addendum.md`
 
-- [ ] **Step 1: Define required UI states**
+- [x] **Step 1: Define required UI states**
 
 Add a `## Interaction State Map` section to the UI design addendum.
 
@@ -110,7 +110,7 @@ It must cover these states:
 - Selected book detail.
 - Settings edit and save states.
 
-- [ ] **Step 2: Add acceptance notes for each state**
+- [x] **Step 2: Add acceptance notes for each state**
 
 For each state in `## Interaction State Map`, include:
 
@@ -124,13 +124,13 @@ For each state in `## Interaction State Map`, include:
 **Files:**
 - Modify: `docs/superpowers/specs/2026-06-17-nextchapter-ui-design-addendum.md`
 
-- [ ] **Step 1: Choose the MVP visual direction**
+- [x] **Step 1: Choose the MVP visual direction**
 
 Add a `## Visual Direction` section to the UI design addendum.
 
 The selected direction must describe the app as a quiet personal reading workspace: warm, focused, bookish, useful, and not a marketing page.
 
-- [ ] **Step 2: Define component rules**
+- [x] **Step 2: Define component rules**
 
 Add a `## Component Rules` section to the UI design addendum.
 
@@ -150,7 +150,7 @@ Define:
 **Files:**
 - Modify: `docs/superpowers/specs/2026-06-17-nextchapter-ui-design-addendum.md`
 
-- [ ] **Step 1: Add approval status**
+- [x] **Step 1: Add approval status**
 
 Add an `## Approval` section to the UI design addendum with:
 
@@ -164,11 +164,11 @@ Implementation must not begin until this status is changed to:
 Status: Approved by user
 ```
 
-- [ ] **Step 2: Request user review**
+- [x] **Step 2: Request user review**
 
 Ask the user to review `docs/superpowers/specs/2026-06-17-nextchapter-ui-design-addendum.md`. If the user requests changes, revise the addendum before Task 1 starts.
 
-- [ ] **Step 3: Lock the design gate**
+- [x] **Step 3: Lock the design gate**
 
 After user approval, update the addendum approval section to:
 
@@ -196,7 +196,7 @@ Only after this status is present may implementation proceed to `Task 1: Scaffol
 - Create: `src/styles.css`
 - Test: `src/App.test.tsx`
 
-- [ ] **Step 0: Confirm approved UI design addendum**
+- [x] **Step 0: Confirm approved UI design addendum**
 
 Open `docs/superpowers/specs/2026-06-17-nextchapter-ui-design-addendum.md` and verify it contains:
 
@@ -206,7 +206,7 @@ Status: Approved by user
 
 Expected: the approval status is present before any app scaffolding or React implementation begins. If it is missing, stop and complete the Pre-Coding UI Design Tasks first.
 
-- [ ] **Step 1: Create the package manifest**
+- [x] **Step 1: Create the package manifest**
 
 Create `package.json`:
 
@@ -245,7 +245,7 @@ Create `package.json`:
 }
 ```
 
-- [ ] **Step 2: Add Vite and TypeScript config**
+- [x] **Step 2: Add Vite and TypeScript config**
 
 Create `index.html`:
 
@@ -329,7 +329,7 @@ Create `vitest.setup.ts`:
 import "@testing-library/jest-dom/vitest";
 ```
 
-- [ ] **Step 3: Write the failing shell render test**
+- [x] **Step 3: Write the failing shell render test**
 
 Create `src/App.test.tsx`:
 
@@ -348,7 +348,7 @@ describe("App", () => {
 });
 ```
 
-- [ ] **Step 4: Run test to verify it fails**
+- [x] **Step 4: Run test to verify it fails**
 
 Run: `npm install`
 
@@ -356,7 +356,7 @@ Run: `npm test -- src/App.test.tsx`
 
 Expected: dependency installation succeeds, then the test fails because `src/App.tsx` does not exist.
 
-- [ ] **Step 5: Implement the app shell**
+- [x] **Step 5: Implement the app shell**
 
 Create `src/main.tsx`:
 
@@ -554,19 +554,19 @@ button[aria-selected="true"] {
 }
 ```
 
-- [ ] **Step 6: Run test to verify it passes**
+- [x] **Step 6: Run test to verify it passes**
 
 Run: `npm test -- src/App.test.tsx`
 
 Expected: PASS.
 
-- [ ] **Step 7: Run build**
+- [x] **Step 7: Run build**
 
 Run: `npm run build`
 
 Expected: PASS and Vite writes `dist/`.
 
-- [ ] **Step 8: Commit**
+- [x] **Step 8: Commit**
 
 ```bash
 git add package.json package-lock.json index.html tsconfig.json tsconfig.node.json vite.config.ts vitest.setup.ts src/main.tsx src/App.tsx src/styles.css src/App.test.tsx
