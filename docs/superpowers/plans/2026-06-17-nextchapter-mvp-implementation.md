@@ -12,6 +12,7 @@
 
 ## File Structure
 
+- Create `docs/superpowers/specs/2026-06-17-nextchapter-ui-design-addendum.md`: approved wireframes, interaction state map, visual direction, and UI implementation rules. This file must exist and be approved before app scaffolding starts.
 - Create `package.json`: scripts and dependencies.
 - Create `index.html`: Vite HTML entry.
 - Create `tsconfig.json`, `tsconfig.node.json`, `vite.config.ts`, `vitest.setup.ts`: TypeScript, Vite, and test configuration.
@@ -43,6 +44,142 @@
 - Create `src/test/testUtils.tsx`: React test helpers.
 - Create tests beside modules as `*.test.ts` or `*.test.tsx`.
 
+## Pre-Coding UI Design Tasks
+
+These tasks are required before `Task 1: Scaffold Tooling And App Shell`. They produce design artifacts only; do not scaffold React, write app code, or create implementation files until the user has approved the UI design addendum.
+
+### Pre-Coding Task A: Product Flow Wireframes
+
+**Files:**
+- Create: `docs/superpowers/specs/2026-06-17-nextchapter-ui-design-addendum.md`
+
+- [ ] **Step 1: Create low-fidelity desktop wireframes**
+
+Add a `## Desktop Wireframes` section to `docs/superpowers/specs/2026-06-17-nextchapter-ui-design-addendum.md`.
+
+The desktop wireframes must show:
+
+- Chat panel on the left.
+- Canvas on the right.
+- Canvas navigation for Library, Sessions, Current Results, Book Detail, and Settings.
+- Current Results grouped into "From your want-to-read shelf" and "New discoveries".
+- Inline actions for shortlist, accept, reject, add to want-to-read, mark read, open detail, and external links.
+
+- [ ] **Step 2: Create low-fidelity mobile wireframes**
+
+Add a `## Mobile Wireframes` section to the UI design addendum.
+
+The mobile wireframes must show:
+
+- Chat and canvas reachable without horizontal scrolling.
+- A clear way to switch between chat and canvas views.
+- The same primary canvas surfaces as desktop: Library, Sessions, Current Results, Book Detail, and Settings.
+- Recommendation cards that keep rationale, caveats, and actions readable on a narrow screen.
+
+- [ ] **Step 3: Document the core recommendation flow**
+
+Add a `## Core Flow` section to the UI design addendum.
+
+Document this sequence:
+
+1. User enters a natural-language prompt in chat.
+2. App creates or continues a recommendation session.
+3. Current Results shows recommendation cards in the two required lanes.
+4. User shortlists, accepts, rejects, opens details, or refines in chat.
+5. Follow-up prompt creates another round in the same saved session.
+6. Sessions view lets the user return to prior rounds and shortlists.
+
+### Pre-Coding Task B: Interaction State Map
+
+**Files:**
+- Modify: `docs/superpowers/specs/2026-06-17-nextchapter-ui-design-addendum.md`
+
+- [ ] **Step 1: Define required UI states**
+
+Add a `## Interaction State Map` section to the UI design addendum.
+
+It must cover these states:
+
+- Empty library.
+- Imported library.
+- Import errors or skipped CSV rows.
+- No active recommendation session.
+- Active recommendation results.
+- Iterative follow-up round.
+- Pending preference suggestion.
+- Selected book detail.
+- Settings edit and save states.
+
+- [ ] **Step 2: Add acceptance notes for each state**
+
+For each state in `## Interaction State Map`, include:
+
+- What must be visible.
+- What primary actions must be available.
+- What empty, error, or confirmation copy must communicate.
+- Which canvas tab or chat area owns the state.
+
+### Pre-Coding Task C: Visual Direction And Component Rules
+
+**Files:**
+- Modify: `docs/superpowers/specs/2026-06-17-nextchapter-ui-design-addendum.md`
+
+- [ ] **Step 1: Choose the MVP visual direction**
+
+Add a `## Visual Direction` section to the UI design addendum.
+
+The selected direction must describe the app as a quiet personal reading workspace: warm, focused, bookish, useful, and not a marketing page.
+
+- [ ] **Step 2: Define component rules**
+
+Add a `## Component Rules` section to the UI design addendum.
+
+Define:
+
+- Typography scale.
+- Spacing density.
+- Color palette.
+- Card and list treatment.
+- Button hierarchy.
+- Responsive behavior.
+- Settings as a secondary surface.
+- Library, Sessions, Current Results, and Book Detail as primary canvas surfaces.
+
+### Pre-Coding Task D: UI Approval Gate
+
+**Files:**
+- Modify: `docs/superpowers/specs/2026-06-17-nextchapter-ui-design-addendum.md`
+
+- [ ] **Step 1: Add approval status**
+
+Add an `## Approval` section to the UI design addendum with:
+
+```md
+## Approval
+
+Status: Pending user approval
+
+Implementation must not begin until this status is changed to:
+
+Status: Approved by user
+```
+
+- [ ] **Step 2: Request user review**
+
+Ask the user to review `docs/superpowers/specs/2026-06-17-nextchapter-ui-design-addendum.md`. If the user requests changes, revise the addendum before Task 1 starts.
+
+- [ ] **Step 3: Lock the design gate**
+
+After user approval, update the addendum approval section to:
+
+```md
+## Approval
+
+Status: Approved by user
+```
+
+Only after this status is present may implementation proceed to `Task 1: Scaffold Tooling And App Shell`.
+
 ## Implementation Tasks
 
 ### Task 1: Scaffold Tooling And App Shell
@@ -58,6 +195,16 @@
 - Create: `src/App.tsx`
 - Create: `src/styles.css`
 - Test: `src/App.test.tsx`
+
+- [ ] **Step 0: Confirm approved UI design addendum**
+
+Open `docs/superpowers/specs/2026-06-17-nextchapter-ui-design-addendum.md` and verify it contains:
+
+```md
+Status: Approved by user
+```
+
+Expected: the approval status is present before any app scaffolding or React implementation begins. If it is missing, stop and complete the Pre-Coding UI Design Tasks first.
 
 - [ ] **Step 1: Create the package manifest**
 
@@ -3055,6 +3202,9 @@ Run `npm run dev`, open the local Vite URL, and verify:
 - Sessions shows the saved session and can return to its results.
 - Book Detail opens from a library row.
 - Settings can save reading preferences, model settings, and external link enabled flags.
+- Desktop layout matches the approved UI design addendum: chat is the primary conversational surface and the canvas keeps Library, Sessions, Current Results, and Book Detail visible as primary work areas.
+- Mobile layout matches the approved UI design addendum without horizontal scrolling, text overlap, or unreachable primary actions.
+- Settings remains a secondary configuration surface rather than a face-up primary canvas tab in daily recommendation flows.
 - Refreshing the browser preserves imported books, sessions, preferences, and settings.
 ```
 
