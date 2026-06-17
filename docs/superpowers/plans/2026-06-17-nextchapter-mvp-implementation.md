@@ -582,7 +582,7 @@ git commit -m "feat: scaffold NextChapter app shell"
 - Create: `src/storage/localRepository.ts`
 - Test: `src/storage/localRepository.test.ts`
 
-- [ ] **Step 1: Write failing persistence tests**
+- [x] **Step 1: Write failing persistence tests**
 
 Create `src/storage/localRepository.test.ts`:
 
@@ -645,13 +645,13 @@ describe("localRepository", () => {
 });
 ```
 
-- [ ] **Step 2: Run test to verify it fails**
+- [x] **Step 2: Run test to verify it fails**
 
 Run: `npm test -- src/storage/localRepository.test.ts`
 
 Expected: FAIL because the domain and storage modules do not exist.
 
-- [ ] **Step 3: Implement shared types**
+- [x] **Step 3: Implement shared types**
 
 Create `src/domain/types.ts`:
 
@@ -764,7 +764,7 @@ export interface AppState {
 }
 ```
 
-- [ ] **Step 4: Implement IDs, default state, and repository**
+- [x] **Step 4: Implement IDs, default state, and repository**
 
 Create `src/domain/ids.ts`:
 
@@ -852,13 +852,13 @@ export function saveAppState(state: AppState): void {
 }
 ```
 
-- [ ] **Step 5: Run tests**
+- [x] **Step 5: Run tests**
 
 Run: `npm test -- src/storage/localRepository.test.ts`
 
 Expected: PASS.
 
-- [ ] **Step 6: Commit**
+- [x] **Step 6: Commit**
 
 ```bash
 git add src/domain/types.ts src/domain/ids.ts src/domain/defaultState.ts src/storage/localRepository.ts src/storage/localRepository.test.ts
