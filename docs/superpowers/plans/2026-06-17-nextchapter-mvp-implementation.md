@@ -1344,7 +1344,7 @@ git commit -m "feat: import Goodreads CSV data"
 - Test: `src/domain/recommendationContext.test.ts`
 - Test: `src/domain/recommendationSessions.test.ts`
 
-- [ ] **Step 1: Write failing tests**
+- [x] **Step 1: Write failing tests**
 
 Create `src/domain/recommendationContext.test.ts`:
 
@@ -1466,13 +1466,13 @@ describe("recommendationSessions", () => {
 });
 ```
 
-- [ ] **Step 2: Run tests to verify they fail**
+- [x] **Step 2: Run tests to verify they fail**
 
 Run: `npm test -- src/domain/recommendationContext.test.ts src/domain/recommendationSessions.test.ts`
 
 Expected: FAIL because the modules do not exist.
 
-- [ ] **Step 3: Implement context builder**
+- [x] **Step 3: Implement context builder**
 
 Create `src/domain/recommendationContext.ts`:
 
@@ -1530,7 +1530,7 @@ export function buildRecommendationContext(input: RecommendationContextInput): R
 }
 ```
 
-- [ ] **Step 4: Implement session helpers**
+- [x] **Step 4: Implement session helpers**
 
 Create `src/domain/recommendationSessions.ts`:
 
@@ -1630,13 +1630,13 @@ export function resolvePreferenceSuggestion(
 }
 ```
 
-- [ ] **Step 5: Run tests**
+- [x] **Step 5: Run tests**
 
 Run: `npm test -- src/domain/recommendationContext.test.ts src/domain/recommendationSessions.test.ts`
 
 Expected: PASS.
 
-- [ ] **Step 6: Commit**
+- [x] **Step 6: Commit**
 
 ```bash
 git add src/domain/recommendationContext.ts src/domain/recommendationSessions.ts src/domain/recommendationContext.test.ts src/domain/recommendationSessions.test.ts
