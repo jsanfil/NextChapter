@@ -57,12 +57,45 @@ select {
   overflow: auto;
 }
 
+.message-thread {
+  display: grid;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
 .assistant-message {
   max-width: 42rem;
   padding: 14px 16px;
   border: 1px solid #e5ded2;
   border-radius: 8px;
   background: #faf6ee;
+}
+
+.user-message {
+  justify-self: end;
+  max-width: 42rem;
+  padding: 14px 16px;
+  border-radius: 8px;
+  background: #e8efe3;
+}
+
+.preference-suggestion {
+  border: 1px solid #d3c6a6;
+  background: #fff8e6;
+  border-radius: 8px;
+  padding: 14px;
+  margin-top: 14px;
+}
+
+.inline-actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.error-message {
+  color: #9f1239;
+  font-weight: 700;
 }
 
 .prompt-form {

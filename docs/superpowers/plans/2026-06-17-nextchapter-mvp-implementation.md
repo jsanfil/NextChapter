@@ -1884,7 +1884,7 @@ git commit -m "feat: add configurable recommendation providers"
 - Create: `src/test/testUtils.tsx`
 - Test: `src/components/ChatPanel.test.tsx`
 
-- [ ] **Step 1: Write failing chat interaction test**
+- [x] **Step 1: Write failing chat interaction test**
 
 Create `src/test/testUtils.tsx`:
 
@@ -1964,13 +1964,13 @@ describe("ChatPanel", () => {
 });
 ```
 
-- [ ] **Step 2: Run test to verify it fails**
+- [x] **Step 2: Run test to verify it fails**
 
 Run: `npm test -- src/components/ChatPanel.test.tsx`
 
 Expected: FAIL because `ChatPanel.tsx` does not exist.
 
-- [ ] **Step 3: Implement ChatPanel and CanvasTabs**
+- [x] **Step 3: Implement ChatPanel and CanvasTabs**
 
 Create `src/components/ChatPanel.tsx`:
 
@@ -2101,7 +2101,7 @@ export default function CanvasTabs({ activeTab, onChange }: CanvasTabsProps) {
 }
 ```
 
-- [ ] **Step 4: Wire App state and recommendation flow**
+- [x] **Step 4: Wire App state and recommendation flow**
 
 Replace `src/App.tsx`:
 
@@ -2241,7 +2241,7 @@ function canvasPlaceholder(tab: CanvasTab, activeSession?: RecommendationSession
 }
 ```
 
-- [ ] **Step 5: Add CSS for chat messages and actions**
+- [x] **Step 5: Add CSS for chat messages and actions**
 
 Append to `src/styles.css`:
 
@@ -2280,7 +2280,7 @@ Append to `src/styles.css`:
 }
 ```
 
-- [ ] **Step 6: Run tests and build**
+- [x] **Step 6: Run tests and build**
 
 Run: `npm test -- src/components/ChatPanel.test.tsx src/App.test.tsx`
 
@@ -2290,7 +2290,7 @@ Run: `npm run build`
 
 Expected: PASS.
 
-- [ ] **Step 7: Commit**
+- [x] **Step 7: Commit**
 
 ```bash
 git add src/App.tsx src/components/ChatPanel.tsx src/components/CanvasTabs.tsx src/components/ChatPanel.test.tsx src/test/testUtils.tsx src/styles.css
