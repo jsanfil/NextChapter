@@ -1113,7 +1113,7 @@ git commit -m "feat: add library domain helpers"
 - Create: `src/test/fixtures/goodreads-export.csv`
 - Test: `src/domain/goodreadsCsv.test.ts`
 
-- [ ] **Step 1: Add CSV fixture and failing tests**
+- [x] **Step 1: Add CSV fixture and failing tests**
 
 Create `src/test/fixtures/goodreads-export.csv`:
 
@@ -1179,13 +1179,13 @@ describe("goodreadsCsv", () => {
 });
 ```
 
-- [ ] **Step 2: Run test to verify it fails**
+- [x] **Step 2: Run test to verify it fails**
 
 Run: `npm test -- src/domain/goodreadsCsv.test.ts`
 
 Expected: FAIL because `goodreadsCsv.ts` does not exist.
 
-- [ ] **Step 3: Implement parser**
+- [x] **Step 3: Implement parser**
 
 Create `src/domain/goodreadsCsv.ts`:
 
@@ -1323,13 +1323,13 @@ export function parseGoodreadsCsv(csv: string, options: ParseOptions): Goodreads
 }
 ```
 
-- [ ] **Step 4: Run tests**
+- [x] **Step 4: Run tests**
 
 Run: `npm test -- src/domain/goodreadsCsv.test.ts`
 
 Expected: PASS.
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 git add src/domain/goodreadsCsv.ts src/domain/goodreadsCsv.test.ts src/test/fixtures/goodreads-export.csv
