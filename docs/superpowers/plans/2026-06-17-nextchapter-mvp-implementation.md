@@ -873,7 +873,7 @@ git commit -m "feat: add typed app state persistence"
 - Test: `src/domain/library.test.ts`
 - Test: `src/domain/externalLinks.test.ts`
 
-- [ ] **Step 1: Write failing library and link tests**
+- [x] **Step 1: Write failing library and link tests**
 
 Create `src/domain/library.test.ts`:
 
@@ -958,13 +958,13 @@ describe("externalLinks", () => {
 });
 ```
 
-- [ ] **Step 2: Run tests to verify they fail**
+- [x] **Step 2: Run tests to verify they fail**
 
 Run: `npm test -- src/domain/library.test.ts src/domain/externalLinks.test.ts`
 
 Expected: FAIL because the modules do not exist.
 
-- [ ] **Step 3: Implement library helpers**
+- [x] **Step 3: Implement library helpers**
 
 Create `src/domain/library.ts`:
 
@@ -1027,7 +1027,7 @@ export function upsertBook(books: Book[], incoming: Book): Book[] {
 }
 ```
 
-- [ ] **Step 4: Implement external link generation**
+- [x] **Step 4: Implement external link generation**
 
 Create `src/domain/externalLinks.ts`:
 
@@ -1093,13 +1093,13 @@ export function buildSourceLinks(book: LinkBookInput, settings: LinkSourceSettin
 }
 ```
 
-- [ ] **Step 5: Run tests**
+- [x] **Step 5: Run tests**
 
 Run: `npm test -- src/domain/library.test.ts src/domain/externalLinks.test.ts`
 
 Expected: PASS.
 
-- [ ] **Step 6: Commit**
+- [x] **Step 6: Commit**
 
 ```bash
 git add src/domain/library.ts src/domain/externalLinks.ts src/domain/library.test.ts src/domain/externalLinks.test.ts
