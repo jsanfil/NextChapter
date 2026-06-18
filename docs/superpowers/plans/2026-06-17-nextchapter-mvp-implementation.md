@@ -1651,7 +1651,7 @@ git commit -m "feat: model recommendation sessions"
 - Create: `src/ai/openAiCompatibleProvider.ts`
 - Test: `src/ai/mockProvider.test.ts`
 
-- [ ] **Step 1: Write failing mock provider tests**
+- [x] **Step 1: Write failing mock provider tests**
 
 Create `src/ai/mockProvider.test.ts`:
 
@@ -1705,13 +1705,13 @@ describe("mockProvider", () => {
 });
 ```
 
-- [ ] **Step 2: Run test to verify it fails**
+- [x] **Step 2: Run test to verify it fails**
 
 Run: `npm test -- src/ai/mockProvider.test.ts`
 
 Expected: FAIL because AI modules do not exist.
 
-- [ ] **Step 3: Implement provider contracts and mock provider**
+- [x] **Step 3: Implement provider contracts and mock provider**
 
 Create `src/ai/types.ts`:
 
@@ -1806,7 +1806,7 @@ export function createMockRecommendationProvider(): RecommendationProvider {
 }
 ```
 
-- [ ] **Step 4: Implement OpenAI-compatible provider shell**
+- [x] **Step 4: Implement OpenAI-compatible provider shell**
 
 Create `src/ai/openAiCompatibleProvider.ts`:
 
@@ -1862,13 +1862,13 @@ export function createOpenAiCompatibleProvider(settings: AiSettings): Recommenda
 }
 ```
 
-- [ ] **Step 5: Run tests**
+- [x] **Step 5: Run tests**
 
 Run: `npm test -- src/ai/mockProvider.test.ts`
 
 Expected: PASS.
 
-- [ ] **Step 6: Commit**
+- [x] **Step 6: Commit**
 
 ```bash
 git add src/ai/types.ts src/ai/mockProvider.ts src/ai/openAiCompatibleProvider.ts src/ai/mockProvider.test.ts
