@@ -1,12 +1,17 @@
 import { useEffect, useMemo, useState } from "react";
 import { createMockRecommendationProvider } from "./ai/mockProvider";
+import BookDetailPanel from "./components/BookDetailPanel";
 import CanvasTabs, { type CanvasTab } from "./components/CanvasTabs";
 import ChatPanel from "./components/ChatPanel";
+import CurrentResultsView from "./components/CurrentResultsView";
 import LibraryView from "./components/LibraryView";
+import RecommendationSessionsView from "./components/RecommendationSessionsView";
+import SettingsView from "./components/SettingsView";
 import { buildRecommendationContext } from "./domain/recommendationContext";
 import {
   appendRecommendationRound,
   createRecommendationSession,
+  decideRecommendation,
   resolvePreferenceSuggestion
 } from "./domain/recommendationSessions";
 import type { AppState, RecommendationSession } from "./domain/types";
@@ -25,6 +30,10 @@ export default function App() {
   const activeSession = useMemo(
     () => state.sessions.find((session) => session.id === state.activeSessionId),
     [state.activeSessionId, state.sessions]
+  );
+  const selectedBook = useMemo(
+    () => state.books.find((book) => book.id === state.selectedBookId),
+    [state.books, state.selectedBookId]
   );
 
   async function submitPrompt(prompt: string) {
@@ -112,8 +121,44 @@ export default function App() {
             />
           ) : (
             <>
-              <h2>{tabTitle(activeTab)}</h2>
-              <p>{canvasPlaceholder(activeTab, activeSession)}</p>
+              {activeTab === "sessions" ? (
+                <RecommendationSessionsView
+                  sessions={state.sessions}
+                  activeSessionId={state.activeSessionId}
+                  onSelectSession={(sessionId) => {
+                    setState((current) => ({ ...current, activeSessionId: sessionId }));
+                    setActiveTab("results");
+                  }}
+                />
+              ) : null}
+              {activeTab === "results" ? (
+                <CurrentResultsView
+                  session={activeSession}
+                  onDecideRecommendation={(recommendationId, decision) => {
+                    if (!activeSession) {
+                      return;
+                    }
+                    const updated = decideRecommendation(activeSession, recommendationId, decision);
+                    setState((current) => ({
+                      ...current,
+                      sessions: upsertSession(current.sessions, updated)
+                    }));
+                  }}
+                  onSelectBook={(bookId) => {
+                    setState((current) => ({ ...current, selectedBookId: bookId }));
+                    setActiveTab("detail");
+                  }}
+                />
+              ) : null}
+              {activeTab === "detail" ? <BookDetailPanel book={selectedBook} /> : null}
+              {activeTab === "settings" ? (
+                <SettingsView
+                  preferences={state.preferences}
+                  settings={state.settings}
+                  onPreferencesChange={(preferences) => setState((current) => ({ ...current, preferences }))}
+                  onSettingsChange={(settings) => setState((current) => ({ ...current, settings }))}
+                />
+              ) : null}
             </>
           )}
         </div>
@@ -139,13 +184,4 @@ function tabTitle(tab: CanvasTab): string {
   };
 
   return titles[tab];
-}
-
-function canvasPlaceholder(tab: CanvasTab, activeSession?: RecommendationSession): string {
-  if (tab === "results" && activeSession) {
-    const count = activeSession.rounds.at(-1)?.recommendations.length || 0;
-    return `${count} recommendations in the latest round.`;
-  }
-
-  return "This view is implemented in the next tasks.";
 }

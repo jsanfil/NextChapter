@@ -2623,7 +2623,7 @@ git commit -m "feat: add editable library and Goodreads import"
 - Test: `src/components/CurrentResultsView.test.tsx`
 - Test: `src/components/SettingsView.test.tsx`
 
-- [ ] **Step 1: Write failing view tests**
+- [x] **Step 1: Write failing view tests**
 
 Create `src/components/CurrentResultsView.test.tsx`:
 
@@ -2711,13 +2711,13 @@ describe("SettingsView", () => {
 });
 ```
 
-- [ ] **Step 2: Run tests to verify they fail**
+- [x] **Step 2: Run tests to verify they fail**
 
 Run: `npm test -- src/components/CurrentResultsView.test.tsx src/components/SettingsView.test.tsx`
 
 Expected: FAIL because the components do not exist.
 
-- [ ] **Step 3: Implement result card and results view**
+- [x] **Step 3: Implement result card and results view**
 
 Create `src/components/RecommendationCard.tsx`:
 
@@ -2826,7 +2826,7 @@ export default function CurrentResultsView({ session, onDecideRecommendation, on
 }
 ```
 
-- [ ] **Step 4: Implement sessions, detail, and settings views**
+- [x] **Step 4: Implement sessions, detail, and settings views**
 
 Create `src/components/RecommendationSessionsView.tsx`:
 
@@ -2996,7 +2996,7 @@ export default function SettingsView({
 }
 ```
 
-- [ ] **Step 5: Wire views into App**
+- [x] **Step 5: Wire views into App**
 
 Add imports to `src/App.tsx`:
 
@@ -3059,7 +3059,7 @@ Replace the non-library canvas branch in `src/App.tsx` with:
 </>
 ```
 
-- [ ] **Step 6: Add result/settings CSS**
+- [x] **Step 6: Add result/settings CSS**
 
 Append to `src/styles.css`:
 
@@ -3115,7 +3115,7 @@ Append to `src/styles.css`:
 }
 ```
 
-- [ ] **Step 7: Run tests and build**
+- [x] **Step 7: Run tests and build**
 
 Run: `npm test -- src/components/CurrentResultsView.test.tsx src/components/SettingsView.test.tsx src/App.test.tsx`
 
@@ -3125,7 +3125,7 @@ Run: `npm run build`
 
 Expected: PASS.
 
-- [ ] **Step 8: Commit**
+- [x] **Step 8: Commit**
 
 ```bash
 git add src/App.tsx src/components/RecommendationCard.tsx src/components/CurrentResultsView.tsx src/components/RecommendationSessionsView.tsx src/components/BookDetailPanel.tsx src/components/SettingsView.tsx src/components/CurrentResultsView.test.tsx src/components/SettingsView.test.tsx src/styles.css
