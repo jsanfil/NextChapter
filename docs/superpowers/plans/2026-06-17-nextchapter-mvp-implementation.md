@@ -3138,7 +3138,7 @@ git commit -m "feat: add recommendation canvas views"
 - Create: `docs/manual-qa.md`
 - Modify: `README.md`
 
-- [ ] **Step 1: Create README**
+- [x] **Step 1: Create README**
 
 Create `README.md`:
 
@@ -3183,7 +3183,7 @@ npm run build
 - Edit preferences, AI settings, and external link sources.
 ```
 
-- [ ] **Step 2: Create manual QA checklist**
+- [x] **Step 2: Create manual QA checklist**
 
 Create `docs/manual-qa.md`:
 
@@ -3208,7 +3208,7 @@ Run `npm run dev`, open the local Vite URL, and verify:
 - Refreshing the browser preserves imported books, sessions, preferences, and settings.
 ```
 
-- [ ] **Step 3: Run full automated verification**
+- [x] **Step 3: Run full automated verification**
 
 Run: `npm test`
 
@@ -3218,13 +3218,13 @@ Run: `npm run build`
 
 Expected: PASS.
 
-- [ ] **Step 4: Run local app for manual verification**
+- [x] **Step 4: Run local app for manual verification**
 
 Run: `npm run dev`
 
 Expected: Vite prints a localhost URL. Open it and execute `docs/manual-qa.md`.
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 git add README.md docs/manual-qa.md
