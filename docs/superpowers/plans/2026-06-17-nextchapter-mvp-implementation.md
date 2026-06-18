@@ -2306,7 +2306,7 @@ git commit -m "feat: add recommendation chat flow"
 - Modify: `src/styles.css`
 - Test: `src/components/LibraryView.test.tsx`
 
-- [ ] **Step 1: Write failing LibraryView test**
+- [x] **Step 1: Write failing LibraryView test**
 
 Create `src/components/LibraryView.test.tsx`:
 
@@ -2337,13 +2337,13 @@ describe("LibraryView", () => {
 });
 ```
 
-- [ ] **Step 2: Run test to verify it fails**
+- [x] **Step 2: Run test to verify it fails**
 
 Run: `npm test -- src/components/LibraryView.test.tsx`
 
 Expected: FAIL because `LibraryView.tsx` does not exist.
 
-- [ ] **Step 3: Implement BookForm and LibraryView**
+- [x] **Step 3: Implement BookForm and LibraryView**
 
 Create `src/components/BookForm.tsx`:
 
@@ -2515,7 +2515,7 @@ export default function LibraryView({ books, linkSources, onBooksChange, onSelec
 }
 ```
 
-- [ ] **Step 4: Wire LibraryView into App**
+- [x] **Step 4: Wire LibraryView into App**
 
 Modify `src/App.tsx` imports:
 
@@ -2546,7 +2546,7 @@ Replace the `.canvas-body` contents in `src/App.tsx` with:
 </div>
 ```
 
-- [ ] **Step 5: Add CSS for library forms and lists**
+- [x] **Step 5: Add CSS for library forms and lists**
 
 Append to `src/styles.css`:
 
@@ -2593,7 +2593,7 @@ Append to `src/styles.css`:
 }
 ```
 
-- [ ] **Step 6: Run tests and build**
+- [x] **Step 6: Run tests and build**
 
 Run: `npm test -- src/components/LibraryView.test.tsx src/domain/goodreadsCsv.test.ts`
 
@@ -2603,7 +2603,7 @@ Run: `npm run build`
 
 Expected: PASS.
 
-- [ ] **Step 7: Commit**
+- [x] **Step 7: Commit**
 
 ```bash
 git add src/App.tsx src/components/BookForm.tsx src/components/LibraryView.tsx src/components/LibraryView.test.tsx src/styles.css

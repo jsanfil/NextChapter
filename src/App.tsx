@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { createMockRecommendationProvider } from "./ai/mockProvider";
 import CanvasTabs, { type CanvasTab } from "./components/CanvasTabs";
 import ChatPanel from "./components/ChatPanel";
+import LibraryView from "./components/LibraryView";
 import { buildRecommendationContext } from "./domain/recommendationContext";
 import {
   appendRecommendationRound,
@@ -99,8 +100,22 @@ export default function App() {
       <section className="canvas-panel" aria-label="Library canvas">
         <CanvasTabs activeTab={activeTab} onChange={setActiveTab} />
         <div className="canvas-body">
-          <h2>{tabTitle(activeTab)}</h2>
-          <p>{canvasPlaceholder(activeTab, activeSession)}</p>
+          {activeTab === "library" ? (
+            <LibraryView
+              books={state.books}
+              linkSources={state.settings.linkSources}
+              onBooksChange={(books) => setState((current) => ({ ...current, books }))}
+              onSelectBook={(bookId) => {
+                setState((current) => ({ ...current, selectedBookId: bookId }));
+                setActiveTab("detail");
+              }}
+            />
+          ) : (
+            <>
+              <h2>{tabTitle(activeTab)}</h2>
+              <p>{canvasPlaceholder(activeTab, activeSession)}</p>
+            </>
+          )}
         </div>
       </section>
     </main>
