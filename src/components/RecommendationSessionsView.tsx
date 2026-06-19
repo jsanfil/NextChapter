@@ -35,14 +35,17 @@ export default function RecommendationSessionsView({
               type="button"
               onClick={() => onSelectSession(session.id)}
               className={[
-                "w-full text-left flex items-start justify-between gap-4 px-3.5 py-3 rounded-[--radius-md] border transition-colors",
+                "w-full text-left flex items-start justify-between gap-4 px-3.5 py-3 rounded-xl transition-colors group",
                 isActive
-                  ? "border-[--color-border-mid] bg-[--color-parchment]"
-                  : "border-transparent hover:border-[--color-border] hover:bg-[--color-parchment]",
+                  ? "bg-[--color-cream]"
+                  : "hover:bg-[--color-cream]",
               ].join(" ")}
             >
               <div className="min-w-0 space-y-0.5">
-                <p className="text-sm font-medium text-[--color-ink] truncate m-0">
+                <p className={[
+                  "text-sm font-medium truncate m-0 transition-colors",
+                  isActive ? "text-[--color-espresso]" : "text-[--color-ink] group-hover:text-[--color-espresso]",
+                ].join(" ")}>
                   {session.title}
                 </p>
                 <p className="text-xs text-[--color-ink-muted] m-0">
@@ -51,7 +54,7 @@ export default function RecommendationSessionsView({
               </div>
               <div className="shrink-0 text-right">
                 {isActive ? (
-                  <span className="text-[0.65rem] font-semibold px-2 py-0.5 rounded-full border border-[--color-green]/30 text-[--color-green] bg-[--color-green-bg]">
+                  <span className="text-[0.65rem] font-semibold px-2 py-0.5 rounded-full text-[--color-green] bg-[--color-green-bg]">
                     Active
                   </span>
                 ) : (
