@@ -37,8 +37,8 @@ export default function RecommendationSessionsView({
               className={[
                 "w-full text-left flex items-start justify-between gap-4 px-3.5 py-3 rounded-xl transition-colors group",
                 isActive
-                  ? "bg-[--color-parchment] shadow-sm ring-1 ring-[--color-border]"
-                  : "hover:bg-[--color-parchment]",
+                  ? "bg-[--color-ghost-btn]"
+                  : "hover:bg-[--color-cream]",
               ].join(" ")}
             >
               <div className="min-w-0 space-y-0.5">
