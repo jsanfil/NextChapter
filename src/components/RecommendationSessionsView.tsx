@@ -34,25 +34,25 @@ export default function RecommendationSessionsView({
               key={session.id}
               type="button"
               onClick={() => onSelectSession(session.id)}
-              className="w-full text-left flex items-start justify-between gap-4 py-3 rounded-xl transition-colors group session-entry-btn"
-              style={{
-                backgroundColor: isActive ? "var(--color-cream)" : undefined,
-                paddingLeft: isActive ? "calc(0.875rem - 2px)" : "0.875rem",
-                borderLeft: isActive ? "2px solid var(--color-border-mid)" : "2px solid transparent",
-              }}
+              className={
+                isActive
+                  ? "w-full text-left flex items-start justify-between gap-4 pl-3 pr-3.5 py-3 rounded-xl border-l-2 border-[--color-border-mid] bg-[--color-cream] transition-colors group"
+                  : "w-full text-left flex items-start justify-between gap-4 px-3.5 py-3 rounded-xl border-l-2 border-transparent hover:bg-[--color-cream] transition-colors group"
+              }
             >
               <div className="min-w-0 space-y-0.5">
-                <p
-                  className="text-sm font-medium truncate m-0 transition-colors"
-                  style={{ color: isActive ? "var(--color-espresso)" : undefined }}
-                >
+                <p className={
+                  isActive
+                    ? "text-sm font-medium truncate m-0 text-[--color-espresso]"
+                    : "text-sm font-medium truncate m-0 text-[--color-ink] group-hover:text-[--color-espresso]"
+                }>
                   {session.title}
                 </p>
                 <p className="text-xs text-[--color-ink-muted] m-0">
                   {session.messages.length} {session.messages.length === 1 ? "message" : "messages"}
                 </p>
               </div>
-              <div className="shrink-0 text-right pr-3.5">
+              <div className="shrink-0 text-right">
                 {isActive ? (
                   <span className="text-[0.65rem] font-semibold px-2 py-0.5 rounded-full text-[--color-green] bg-[--color-green-bg]">
                     Active
