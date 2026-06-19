@@ -34,11 +34,11 @@ export default function RecommendationSessionsView({
               key={session.id}
               type="button"
               onClick={() => onSelectSession(session.id)}
-              className="w-full text-left flex items-start justify-between gap-4 px-3.5 py-3 rounded-xl transition-colors group session-entry-btn"
+              className="w-full text-left flex items-start justify-between gap-4 py-3 rounded-xl transition-colors group session-entry-btn"
               style={{
-                backgroundColor: isActive
-                  ? "var(--color-ghost-btn)"
-                  : undefined,
+                backgroundColor: isActive ? "var(--color-cream)" : undefined,
+                paddingLeft: isActive ? "calc(0.875rem - 2px)" : "0.875rem",
+                borderLeft: isActive ? "2px solid var(--color-border-mid)" : "2px solid transparent",
               }}
             >
               <div className="min-w-0 space-y-0.5">
@@ -52,7 +52,7 @@ export default function RecommendationSessionsView({
                   {session.messages.length} {session.messages.length === 1 ? "message" : "messages"}
                 </p>
               </div>
-              <div className="shrink-0 text-right">
+              <div className="shrink-0 text-right pr-3.5">
                 {isActive ? (
                   <span className="text-[0.65rem] font-semibold px-2 py-0.5 rounded-full text-[--color-green] bg-[--color-green-bg]">
                     Active

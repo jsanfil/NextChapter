@@ -74,8 +74,8 @@ select {
 }
 
 
-/* ── Session entry hover ── */
-.session-entry-btn:hover {
+/* ── Session entry hover (inactive rows only) ── */
+.session-entry-btn:not([style*="var(--color-cream)"]):hover {
   background-color: var(--color-cream);
 }
 
