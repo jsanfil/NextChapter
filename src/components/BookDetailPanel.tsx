@@ -184,7 +184,7 @@ export default function BookDetailPanel({ book, catalog, isLoadingCatalog = fals
                 href={link.url}
                 target="_blank"
                 rel="noreferrer"
-                className="text-xs font-medium text-[--color-green] bg-[--color-green-bg] rounded-full px-3 py-1 hover:opacity-80 transition-opacity no-underline"
+                className="text-xs font-medium text-[--color-ink] bg-[--color-ghost-btn] shadow-sm rounded-full px-3 py-1.5 hover:bg-[--color-border-mid] transition-colors no-underline"
               >
                 {link.label}
               </a>
