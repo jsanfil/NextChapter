@@ -216,6 +216,7 @@ export default function App() {
               <LibraryView
                 books={state.books}
                 linkSources={state.settings.linkSources}
+                catalogCache={state.catalogCache}
                 onBooksChange={(books) => setState((current) => ({ ...current, books }))}
                 onSelectBook={(bookId) => {
                   setState((current) => ({

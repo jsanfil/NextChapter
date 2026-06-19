@@ -1,11 +1,14 @@
 import { useMemo, useState } from "react";
 import { parseGoodreadsCsv } from "../domain/goodreadsCsv";
 import { upsertBook } from "../domain/library";
-import type { Book, LinkSourceSetting } from "../domain/types";
+import { catalogCacheKey } from "../domain/bookCatalog";
+import { buildSourceLinks } from "../domain/externalLinks";
+import type { Book, CatalogBookMetadata, LinkSourceSetting } from "../domain/types";
 
 interface LibraryViewProps {
   books: Book[];
   linkSources: LinkSourceSetting[];
+  catalogCache?: Record<string, CatalogBookMetadata>;
   onBooksChange: (books: Book[]) => void;
   onSelectBook: (bookId: string) => void;
 }
@@ -73,7 +76,7 @@ function formatDate(dateStr?: string): string | undefined {
   return date.toLocaleDateString("en-US", { year: "numeric", month: "short" });
 }
 
-export default function LibraryView({ books, linkSources, onBooksChange, onSelectBook }: LibraryViewProps) {
+export default function LibraryView({ books, linkSources, catalogCache, onBooksChange, onSelectBook }: LibraryViewProps) {
   const [query, setQuery] = useState("");
   const [shelfFilter, setShelfFilter] = useState<ShelfFilter>("all");
   const [importMessage, setImportMessage] = useState("");
@@ -238,24 +241,47 @@ export default function LibraryView({ books, linkSources, onBooksChange, onSelec
             No books match your search.
           </p>
         ) : (
-          <div className="divide-y divide-[--color-border]/40">
+          <div className="space-y-0.5">
             {visibleBooks.map((book) => {
+              // Resolve cover: prefer catalog (higher quality), fall back to metadata
+              const bookTarget = {
+                title: book.title,
+                author: book.author,
+                localBookId: book.id,
+                isbn: book.isbn,
+                isbn13: book.isbn13,
+                goodreadsId: book.goodreadsId,
+                sourceLinks: book.sourceLinks.length > 0 ? book.sourceLinks : buildSourceLinks(book, linkSources),
+                metadata: book.metadata,
+              };
+              const cacheKey = catalogCacheKey(bookTarget);
+              const catalogEntry = catalogCache?.[cacheKey];
+              const coverUrl = catalogEntry?.coverUrl ?? book.metadata.coverUrl;
+
               const dateLabel = formatDate(book.dateRead) ?? (book.metadata.publicationYear ? String(book.metadata.publicationYear) : undefined);
               return (
                 <button
                   key={book.id}
                   type="button"
                   onClick={() => onSelectBook(book.id)}
-                  className="w-full text-left flex items-start gap-3.5 px-3 py-3.5 hover:bg-[--color-cream] transition-colors group"
+                  className="w-full text-left flex items-start gap-3.5 px-3 py-3 rounded-xl hover:bg-[--color-cream] transition-colors group"
                 >
-                  {/* Cover thumbnail placeholder */}
+                  {/* Cover thumbnail */}
                   <div
-                    className="shrink-0 w-9 h-[54px] rounded-md bg-[--color-cream] border border-[--color-border] flex items-center justify-center"
+                    className="shrink-0 w-9 h-[54px] rounded-md overflow-hidden bg-[--color-cream] border border-[--color-border] flex items-center justify-center"
                     aria-hidden="true"
                   >
-                    <svg className="w-4 h-4 text-[--color-border-mid]" viewBox="0 0 20 20" fill="currentColor">
-                      <path d="M9 4.804A7.968 7.968 0 005.5 4c-1.255 0-2.443.29-3.5.804v10A7.969 7.969 0 015.5 14c1.669 0 3.218.51 4.5 1.385A7.962 7.962 0 0114.5 14c1.255 0 2.443.29 3.5.804v-10A7.968 7.968 0 0014.5 4c-1.255 0-2.443.29-3.5.804V12a1 1 0 11-2 0V4.804z" />
-                    </svg>
+                    {coverUrl ? (
+                      <img
+                        src={coverUrl}
+                        alt=""
+                        className="w-full h-full object-cover"
+                      />
+                    ) : (
+                      <svg className="w-4 h-4 text-[--color-border-mid]" viewBox="0 0 20 20" fill="currentColor">
+                        <path d="M9 4.804A7.968 7.968 0 005.5 4c-1.255 0-2.443.29-3.5.804v10A7.969 7.969 0 015.5 14c1.669 0 3.218.51 4.5 1.385A7.962 7.962 0 0114.5 14c1.255 0 2.443.29 3.5.804v-10A7.968 7.968 0 0014.5 4c-1.255 0-2.443.29-3.5.804V12a1 1 0 11-2 0V4.804z" />
+                      </svg>
+                    )}
                   </div>
 
                   {/* Main content */}
