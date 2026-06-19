@@ -1,10 +1,9 @@
-export type CanvasTab = "library" | "sessions" | "results" | "detail" | "settings";
+export type CanvasTab = "detail" | "library" | "sessions" | "settings";
 
 const tabs: Array<{ id: CanvasTab; label: string }> = [
+  { id: "detail", label: "Book Detail" },
   { id: "library", label: "Library" },
   { id: "sessions", label: "Sessions" },
-  { id: "results", label: "Current Results" },
-  { id: "detail", label: "Book Detail" },
   { id: "settings", label: "Settings" }
 ];
 

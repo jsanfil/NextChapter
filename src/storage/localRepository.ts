@@ -1,5 +1,6 @@
 import { createDefaultAppState } from "../domain/defaultState";
-import type { AppState } from "../domain/types";
+import { legacyRoundsToMessages } from "../domain/recommendationSessions";
+import type { AppState, BookMetadata, LegacyRecommendationRound, RecommendationSession } from "../domain/types";
 
 export const STORAGE_KEY = "nextchapter.appState.v1";
 
@@ -37,16 +38,25 @@ function isSourceLink(value: unknown): boolean {
   );
 }
 
-function isRecommendationDecision(value: unknown): value is AppState["sessions"][number]["rounds"][number]["recommendations"][number]["decision"] {
-  return value === "undecided" || value === "accepted" || value === "rejected" || value === "shortlisted";
-}
-
-function isRecommendationLane(value: unknown): value is AppState["sessions"][number]["rounds"][number]["recommendations"][number]["lane"] {
+function isRecommendationLane(value: unknown): boolean {
   return value === "shelf" || value === "discovery";
 }
 
-function isPreferenceSuggestionStatus(value: unknown): value is AppState["sessions"][number]["rounds"][number]["preferenceSuggestions"][number]["status"] {
+function isPreferenceSuggestionStatus(value: unknown): boolean {
   return value === "pending" || value === "accepted" || value === "declined";
+}
+
+function isBookMetadata(value: unknown): value is BookMetadata {
+  return (
+    isObject(value) &&
+    Array.isArray(value.genres) &&
+    value.genres.every((genre) => typeof genre === "string") &&
+    Array.isArray(value.themes) &&
+    value.themes.every((theme) => typeof theme === "string") &&
+    typeof value.description === "string" &&
+    isOptionalNumber(value.pageCount) &&
+    isOptionalNumber(value.publicationYear)
+  );
 }
 
 function isRecommendation(value: unknown): boolean {
@@ -62,9 +72,9 @@ function isRecommendation(value: unknown): boolean {
     Array.isArray(value.caveats) &&
     value.caveats.every((caveat) => typeof caveat === "string") &&
     isOptionalString(value.linkedBookId) &&
-    isRecommendationDecision(value.decision) &&
     Array.isArray(value.sourceLinks) &&
-    value.sourceLinks.every(isSourceLink)
+    value.sourceLinks.every(isSourceLink) &&
+    (value.metadata === undefined || isBookMetadata(value.metadata))
   );
 }
 
@@ -91,6 +101,47 @@ function isRecommendationRound(value: unknown): boolean {
   );
 }
 
+function isBookLinkTarget(value: unknown): boolean {
+  return (
+    isObject(value) &&
+    typeof value.title === "string" &&
+    typeof value.author === "string" &&
+    isOptionalString(value.localBookId) &&
+    isOptionalString(value.isbn) &&
+    isOptionalString(value.isbn13) &&
+    isOptionalString(value.goodreadsId) &&
+    Array.isArray(value.sourceLinks) &&
+    value.sourceLinks.every(isSourceLink) &&
+    isBookMetadata(value.metadata)
+  );
+}
+
+function isAssistantMessageSegment(value: unknown): boolean {
+  if (!isObject(value) || typeof value.type !== "string" || typeof value.text !== "string") {
+    return false;
+  }
+
+  return value.type === "text" || (value.type === "book-link" && isBookLinkTarget(value.book));
+}
+
+function isChatMessage(value: unknown): boolean {
+  if (!isObject(value) || typeof value.id !== "string" || typeof value.createdAt !== "string" || typeof value.text !== "string") {
+    return false;
+  }
+
+  if (value.role === "user") {
+    return true;
+  }
+
+  return (
+    value.role === "assistant" &&
+    Array.isArray(value.segments) &&
+    value.segments.every(isAssistantMessageSegment) &&
+    Array.isArray(value.preferenceSuggestions) &&
+    value.preferenceSuggestions.every(isPreferenceSuggestion)
+  );
+}
+
 function isBook(value: unknown): boolean {
   return (
     isObject(value) &&
@@ -106,32 +157,38 @@ function isBook(value: unknown): boolean {
     isOptionalString(value.goodreadsId) &&
     Array.isArray(value.sourceLinks) &&
     value.sourceLinks.every(isSourceLink) &&
-    isObject(value.metadata) &&
-    Array.isArray(value.metadata.genres) &&
-    value.metadata.genres.every((genre) => typeof genre === "string") &&
-    Array.isArray(value.metadata.themes) &&
-    value.metadata.themes.every((theme) => typeof theme === "string") &&
-    typeof value.metadata.description === "string" &&
-    isOptionalNumber(value.metadata.pageCount) &&
-    isOptionalNumber(value.metadata.publicationYear)
+    isBookMetadata(value.metadata)
   );
 }
 
-function isSession(value: unknown): boolean {
+function normalizeSession(value: unknown): RecommendationSession | undefined {
+  if (!isObject(value) || typeof value.id !== "string" || typeof value.title !== "string" || typeof value.createdAt !== "string") {
+    return undefined;
+  }
+
+  const updatedAt = typeof value.updatedAt === "string" ? value.updatedAt : value.createdAt;
+  if (Array.isArray(value.messages) && value.messages.every(isChatMessage)) {
+    return {
+      id: value.id,
+      title: value.title,
+      createdAt: value.createdAt,
+      updatedAt,
+      messages: value.messages as RecommendationSession["messages"]
+    };
+  }
+
   return (
-    isObject(value) &&
-    typeof value.id === "string" &&
-    typeof value.title === "string" &&
-    typeof value.originalPrompt === "string" &&
-    typeof value.createdAt === "string" &&
-    typeof value.updatedAt === "string" &&
-    Array.isArray(value.constraints) &&
-    value.constraints.every((constraint) => typeof constraint === "string") &&
-    Array.isArray(value.feedback) &&
-    value.feedback.every((feedback) => typeof feedback === "string") &&
     Array.isArray(value.rounds) &&
     value.rounds.every(isRecommendationRound)
-  );
+  )
+    ? {
+        id: value.id,
+        title: value.title,
+        createdAt: value.createdAt,
+        updatedAt,
+        messages: legacyRoundsToMessages(value.rounds as LegacyRecommendationRound[])
+      }
+    : undefined;
 }
 
 function isLinkSourceSetting(value: unknown): boolean {
@@ -144,7 +201,7 @@ function isLinkSourceSetting(value: unknown): boolean {
   );
 }
 
-function isAppState(value: unknown): value is AppState {
+function normalizeAppState(value: unknown): AppState | undefined {
   if (
     !isObject(value) ||
     !Array.isArray(value.books) ||
@@ -152,7 +209,7 @@ function isAppState(value: unknown): value is AppState {
     !isObject(value.preferences) ||
     !isObject(value.settings)
   ) {
-    return false;
+    return undefined;
   }
 
   const { preferences, settings } = value;
@@ -162,22 +219,50 @@ function isAppState(value: unknown): value is AppState {
     !isObject(settings.ai) ||
     !Array.isArray(settings.linkSources)
   ) {
-    return false;
+    return undefined;
   }
 
   const { ai } = settings;
-  return (
+  if (
     isOptionalString(value.activeSessionId) &&
     isOptionalString(value.selectedBookId) &&
     value.books.every(isBook) &&
-    value.sessions.every(isSession) &&
+    value.sessions.every((session) => normalizeSession(session) !== undefined) &&
     preferences.approvedInferences.every((inference) => typeof inference === "string") &&
     settings.linkSources.every(isLinkSourceSetting) &&
     isAiProvider(ai.provider) &&
     typeof ai.model === "string" &&
     typeof ai.endpoint === "string" &&
     typeof ai.apiKey === "string"
-  );
+  ) {
+    const activeSessionId = value.activeSessionId as string | undefined;
+    const selectedBookId = value.selectedBookId as string | undefined;
+    const typedPreferences: AppState["preferences"] = {
+      text: preferences.text,
+      approvedInferences: preferences.approvedInferences
+    };
+    const typedSettings: AppState["settings"] = {
+      ai: {
+        provider: ai.provider,
+        model: ai.model,
+        endpoint: ai.endpoint,
+        apiKey: ai.apiKey
+      },
+      linkSources: settings.linkSources as AppState["settings"]["linkSources"]
+    };
+
+    return {
+      books: value.books,
+      sessions: value.sessions.map((session) => normalizeSession(session)).filter(Boolean) as RecommendationSession[],
+      activeSessionId,
+      selectedBookId,
+      preferences: typedPreferences,
+      settings: typedSettings,
+      catalogCache: isObject(value.catalogCache) ? (value.catalogCache as AppState["catalogCache"]) : {}
+    };
+  }
+
+  return undefined;
 }
 
 export function loadAppState(): AppState {
@@ -188,11 +273,12 @@ export function loadAppState(): AppState {
 
   try {
     const parsed = JSON.parse(raw);
-    if (!isAppState(parsed)) {
+    const normalized = normalizeAppState(parsed);
+    if (!normalized) {
       return createDefaultAppState();
     }
 
-    return parsed;
+    return normalized;
   } catch {
     return createDefaultAppState();
   }

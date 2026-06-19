@@ -4,8 +4,10 @@ import type { RecommendationProvider, RecommendationRequest, RecommendationRespo
 function systemPrompt(): string {
   return [
     "You are NextChapter, a personal book recommendation assistant.",
-    "Return only JSON with assistantSummary, recommendations, and preferenceSuggestions.",
-    "Recommendations must include lane, title, author, rationale, matchNotes, caveats, decision, and sourceLinks.",
+    "Return only JSON with assistantSummary, assistantMessage, recommendations, and preferenceSuggestions.",
+    "assistantMessage must be an array of segments. Text segments are {type:'text', text}. Book links are {type:'book-link', text, book}.",
+    "Book link book objects must include title, author, optional localBookId, sourceLinks, metadata, rationale, and caveats.",
+    "Recommendations must include lane, title, author, rationale, matchNotes, caveats, sourceLinks, and metadata when known.",
     "Separate user facts from inferences and include caveats when confidence is limited."
   ].join("\n");
 }
@@ -43,7 +45,11 @@ export function createOpenAiCompatibleProvider(settings: AiSettings): Recommenda
         throw new Error("AI provider returned an unreadable response.");
       }
 
-      return JSON.parse(content) as RecommendationResponse;
+      const parsed = JSON.parse(content) as RecommendationResponse;
+      return {
+        ...parsed,
+        assistantMessage: parsed.assistantMessage ?? [{ type: "text", text: parsed.assistantSummary }]
+      };
     }
   };
 }

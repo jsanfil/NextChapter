@@ -8,6 +8,14 @@ describe("mockProvider", () => {
       context: {
         prompt: "post-apocalyptic but reflective",
         preferenceText: "I like character-driven speculative fiction.",
+        contextStrategy: "full",
+        libraryBooks: [],
+        librarySummary: {
+          totalBooks: 0,
+          byShelf: { read: 0, "want-to-read": 0, none: 0 },
+          fiveStarTitles: [],
+          wantToReadTitles: []
+        },
         readBooks: [
           {
             id: "book-read",
@@ -40,6 +48,7 @@ describe("mockProvider", () => {
     });
 
     expect(response.assistantSummary).toContain("post-apocalyptic");
+    expect(response.assistantMessage.some((segment) => segment.type === "book-link")).toBe(true);
     expect(response.recommendations.some((rec) => rec.lane === "shelf")).toBe(true);
     expect(response.recommendations.some((rec) => rec.lane === "discovery")).toBe(true);
     expect(response.recommendations[0].rationale).toBeTruthy();

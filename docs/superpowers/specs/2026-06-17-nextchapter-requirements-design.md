@@ -1,15 +1,15 @@
 # NextChapter Requirements And Design
 
 Date: 2026-06-17
-Status: Draft for user review
+Status: Revised 2026-06-19 for chat-first book inspector direction
 
 ## Overview
 
-NextChapter is a single-user web app that recommends the next book or books to read. It uses the user's Goodreads reading history, editable local library, saved reading preferences, and natural-language prompts to produce explainable recommendations.
+NextChapter is a single-user web app that recommends the next book or books to read. It uses the user's Goodreads reading history, editable local library, saved reading preferences, catalog metadata, and natural-language prompts to produce explainable recommendations.
 
-The primary experience is conversational. The user can ask for loose, informal recommendations such as "find me a post-apocalyptic novel," "something light for summer," or "what should I read next from my want-to-read shelf?" The app pairs this chat flow with a structured canvas for shelves, recommendation sessions, results, and book details.
+The primary experience is a ChatGPT-like conversation. The user can ask for loose, informal recommendations such as "find me a post-apocalyptic novel," "something light for summer," or "what should I read next from my want-to-read shelf?" The assistant answers in natural prose with sections, ranked lists, explanations, and clickable book titles. Clicking a book title updates the right-hand inspector with shelf status, cover art, metadata, a short summary, and links to richer external sources.
 
-The app should feel like a personal reading advisor, not a rigid filter form. It should remember durable preferences, support iterative refinement, and make it easy to return to prior recommendation sessions.
+The app should feel like a personal reading advisor, not a rigid filter form or dashboard. It should preserve the native magic of chat while adding live book links, durable preferences, iterative refinement, saved sessions, and a contextual book inspector.
 
 ## Goals
 
@@ -17,8 +17,10 @@ The app should feel like a personal reading advisor, not a rigid filter form. It
 - Let the user view and edit local `read` and `want-to-read` lists.
 - Recommend books from both the user's want-to-read shelf and the wider world of books.
 - Support natural-language recommendation prompts by genre, theme, mood, tone, pacing, heaviness, seasonality, author traits, length, or comparison to previous books.
-- Explain why each recommendation fits the user's history, preferences, and current prompt.
-- Save iterative recommendation sessions so the user can revisit previous prompts, rounds, feedback, and shortlists.
+- Explain why each recommendation fits the user's history, preferences, and current prompt in the chat response itself.
+- Make recommended book titles clickable in assistant responses.
+- Show selected-book metadata, shelf status, cover art, short summary, and external links in a persistent right-hand inspector.
+- Save conversation sessions so the user can reopen a prior chat and continue it.
 - Maintain an editable reading preferences context that can be updated manually, through chat, or through approved model-suggested insights.
 - Allow the user to configure which LLM provider/model is used.
 - Provide configurable external links for book details and discovery.
@@ -34,11 +36,11 @@ The app should feel like a personal reading advisor, not a rigid filter form. It
 
 ## Product Approach
 
-The selected approach is **Chat + Library Canvas**.
+The selected approach is **Chat-First With Book Inspector**.
 
-The app has a ChatGPT-like recommendation surface for open-ended prompts and follow-up refinement. A durable canvas shows structured information that should not disappear into the chat transcript: imported shelves, editable library records, current recommendation results, saved recommendation sessions, and book detail panels.
+The app has a ChatGPT-like recommendation surface for open-ended prompts and follow-up refinement. The assistant response is the canonical recommendation result: it can include prose, grouped lists, ranked picks, caveats, and book-by-book rationale. Book titles in assistant messages are rendered as links.
 
-This approach keeps the recommendation experience flexible while preserving the concrete state needed for a useful personal reading app.
+The durable right-hand canvas defaults to a selected-book inspector. It shows structured information that should not disappear into the chat transcript: whether the book is already read or want-to-read, imported user notes/ratings, catalog metadata, cover art, short summary, and external detail links. Library, Sessions, and Settings remain reachable as secondary utility views.
 
 ## Core User Flows
 
@@ -84,29 +86,26 @@ The user asks for recommendations in natural language. Examples:
 - "What should I read next from my want-to-read shelf?"
 - "Give me something like Station Eleven but less bleak."
 
-The app should interpret loose requests without requiring structured filters. It should combine the current prompt with relevant library data, saved preferences, session feedback, and available metadata.
+The app should interpret loose requests without requiring structured filters. It should combine the current prompt with relevant library data, saved preferences, prior chat messages in the active session, and available metadata.
 
 ### Review Recommendation Results
 
-Each recommendation round returns a small, useful set of books rather than a huge list. Results are grouped into two lanes:
+Each recommendation round returns a useful chat response rather than a separate card board. The assistant may group recommendations into sections such as "If I were picking one book," "Adventure + fun + offbeat," "Hidden gems," or "Most likely 5-star reads." Each named book should be represented as a structured book link, not plain text.
 
-1. **From your want-to-read shelf**
-2. **New discoveries**
-
-Each recommendation card includes:
+Each linked book carries enough structured data to drive the inspector:
 
 - Title and author
-- Short rationale
-- Match notes tied to the user's prompt, history, or preferences
-- Caveats or reasons it might not fit
-- Shelf/status actions
+- Local book ID when the recommendation matches an imported book
+- ISBN/ISBN13 or Goodreads ID when known
+- Short rationale and caveats
+- Imported or model-provided metadata fallback
 - Configurable external links
 
-The default chat response should be concise and explainable. Richer metadata and longer descriptions can appear in expandable book details.
+The chat response should explain why each recommendation fits. The inspector should handle richer metadata, shelf status, cover art, catalog summaries, and external source links.
 
 ### Refine A Session
 
-Recommendation sessions are iterative. The user can respond with feedback such as:
+Recommendation conversations are iterative. The user can respond with follow-up prompts such as:
 
 - "Not quite right."
 - "More literary."
@@ -116,21 +115,20 @@ Recommendation sessions are iterative. The user can respond with feedback such a
 - "More female authors."
 - "Less bleak."
 
-The app should use this feedback to refine the active session, track which recommendations were rejected or accepted, and preserve the sequence of recommendation rounds.
+The app should append each follow-up to the active chat transcript and use prior messages as conversational context. It does not need to track accepted, rejected, shortlisted, or round-level state for the first version.
 
 ### Save And Revisit Recommendation Sessions
 
-Each recommendation session should be saved as structured state, not only as raw chat. A saved session includes:
+Each recommendation session should be saved as a resumable chat transcript. A saved session includes:
 
-- Original prompt or goal
-- Current constraints, mood, genre, theme, and refinement notes
-- Recommendation rounds
-- Recommended books in each round
-- Accepted, rejected, and shortlisted books
-- User feedback
-- Any preference update suggestions and decisions
+- Session title
+- Created and updated timestamps
+- Ordered user prompts
+- Ordered assistant responses
+- Structured book-link spans inside assistant responses
+- Any pending or resolved preference suggestions attached to assistant messages
 
-The user can return to previous sessions, resume refinement, review prior results, or use a previous session as context for a new one.
+The user can return to a previous session, make it the main chat, click book links in old assistant messages, and continue the same conversation with a new prompt.
 
 ### Manage Reading Preferences Context
 
@@ -153,19 +151,21 @@ The app includes AI settings where the user can configure which LLM provider/mod
 
 The recommendation pipeline should be provider-agnostic. Model-specific prompting or configuration is allowed, but the core recommendation contract should remain stable:
 
-- Input: current prompt, relevant library context, saved preferences, session state, and available metadata.
-- Output: structured recommendation groups, explanations, caveats, preference-update suggestions, and follow-up prompts when needed.
+- Input: current prompt, full normalized library context when within budget, saved preferences, session state, and available metadata.
+- Output: assistant prose with structured book-link spans, recommendation rationale/caveats for linked books, preference-update suggestions, and follow-up prompts when needed.
 
 ### Open Book Details And External Links
 
-The app supports configurable external book-detail/search links. Initial link sources should include:
+The app supports a right-hand book inspector plus configurable external book-detail/search links. When a linked title is clicked, the app resolves it against the local library by local ID, ISBN, or title-author match. If it matches the library, the inspector shows whether it is read or want-to-read and includes imported rating/review fields. If it does not match, the inspector treats it as a new discovery.
+
+The inspector should prefer catalog metadata when available. It should look up details by ISBN first, then title and author. Initial catalog/detail sources should include:
 
 - Goodreads
 - Open Library
 - Google Books
 - Amazon
 
-The app should generate safe search/detail links where direct IDs are unavailable. Link providers and ordering should be configurable in settings.
+The local inspector should show title, author, cover, publication date/year, page count, genres/categories, source attribution, and a short summary. It should fall back to imported or model-provided data when catalog lookup fails. The app should generate safe search/detail links where direct IDs are unavailable. Link providers and ordering should be configurable in settings.
 
 ## Data And Integration Requirements
 
@@ -173,20 +173,20 @@ Goodreads CSV import is the dependable first integration path. Automated Goodrea
 
 Book metadata may come from imported CSV fields, manual edits, and app-friendly providers such as Open Library or Google Books where available. Recommendations should not depend on any single external catalog being complete or correct.
 
-The LLM should receive a scoped context package for each recommendation request. The app should select relevant books and preferences instead of dumping the entire library into every model call.
+The LLM should receive the full imported library as normalized structured records by default. This matches the successful ChatGPT workflow for a small Goodreads export and avoids premature artificial filtering. If the normalized library exceeds the configured model/context budget, the app should fall back to a compact full-library summary plus the most relevant full records.
 
 ## Interface Requirements
 
-The app should use a chat-first layout with a durable canvas for structured state.
+The app should use a chat-first layout with a durable right-hand inspector.
 
-On desktop, chat and canvas can sit side by side. On smaller screens, they can become tabs or stacked panels.
+On desktop, chat and inspector sit side by side. Chat is wider and remains the primary surface. On smaller screens, chat and inspector can become tabs, stacked panels, or a focused detail sheet.
 
-The main canvas focuses on everyday reading work:
+The default canvas is **Book Detail**. Secondary views remain available:
 
+- **Book Detail**: selected book cover, metadata, shelf status, summary, recommendation rationale, user notes, and source links.
 - **Library**: `read` and `want-to-read` lists with search, filter, sort, and manual add/edit support.
-- **Recommendation Sessions**: previous sessions, prompts, rounds, rejected/accepted books, and final shortlists.
-- **Current Results**: grouped recommendation cards for the active session.
-- **Book Detail**: richer metadata, user notes, shelf status, and external links.
+- **Recommendation Sessions**: previous saved chats with message counts, updated timestamps, and resume actions.
+- **Settings**: reading preferences context, AI provider/model settings, external link sources, and catalog behavior.
 
 Settings contains lower-frequency configuration:
 
@@ -194,15 +194,17 @@ Settings contains lower-frequency configuration:
 - **AI Settings**: selected LLM provider/model and related configuration.
 - **External Link Sources**: configurable book-detail/search link providers and ordering.
 
-The UI should make it easy to move from chat to action:
+The UI should make it easy to move from chat to inspection and action:
 
-- Save a recommendation
-- Reject a recommendation
+- Click a book title in chat
+- See whether the book is already read, want-to-read, or new
+- Review metadata, cover, summary, rationale, caveats, and source links
 - Add a book to `want-to-read`
 - Mark a book as `read`
-- Open a book detail panel
 - Open external links
-- Use feedback to refine the session
+- Save the current chat
+- Start a new blank chat without losing saved conversations
+- Continue a saved conversation with follow-up prompts
 - Confirm or decline a proposed preference update inline
 
 ## Recommendation Behavior
@@ -214,8 +216,7 @@ The recommender should optimize for personal fit, not generic popularity. It sho
 - Books the user wants to read
 - User ratings and review text when available
 - Saved reading preferences context
-- Current session feedback
-- Prior accepted and rejected recommendations where relevant
+- Prior messages in the active session
 - Available metadata such as genre, themes, description, length, publication year, and author
 
 The recommender should clearly separate facts from inferences. For example, it may say a book appears to fit a preference because of imported ratings or saved notes, but it should not invent unsupported claims about the user's taste.
@@ -241,12 +242,12 @@ Key test scenarios:
 2. Manually add a book to each list.
 3. Ask for a genre/theme recommendation, such as post-apocalyptic fiction.
 4. Ask for a mood-based recommendation, such as light summer reading.
-5. Refine a recommendation session with negative feedback.
-6. Save or reject recommendations and return to the session later.
+5. Refine a recommendation conversation with a follow-up prompt.
+6. Reopen a saved chat, click a book link from the transcript, and continue the conversation.
 7. Update reading preferences manually.
 8. Accept or decline an inferred preference update.
 9. Change the configured LLM model.
-10. Open external links for a recommended book.
+10. Click a linked book title in chat and verify the right-hand inspector shows metadata, shelf status, summary, cover, and external links.
 
 ## Open Questions For Later Planning
 

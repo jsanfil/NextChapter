@@ -19,6 +19,7 @@ export function createDefaultAppState(): AppState {
   return {
     books: [],
     sessions: [],
+    catalogCache: {},
     preferences: {
       text: "Use my reading history, ratings, notes, and current mood to recommend books. Explain the fit clearly and call out caveats.",
       approvedInferences: []

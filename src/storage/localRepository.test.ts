@@ -124,6 +124,55 @@ describe("localRepository", () => {
     expect(loadAppState().sessions).toEqual([]);
   });
 
+  it("converts old round-based sessions into chat transcripts", () => {
+    localStorage.setItem(
+      STORAGE_KEY,
+      JSON.stringify({
+        ...createDefaultAppState(),
+        sessions: [
+          {
+            id: "session-1",
+            title: "Offbeat adventure",
+            originalPrompt: "Offbeat adventure",
+            createdAt: "2026-06-17T00:00:00.000Z",
+            updatedAt: "2026-06-17T00:00:00.000Z",
+            constraints: [],
+            feedback: [],
+            rounds: [
+              {
+                id: "round-1",
+                prompt: "Offbeat adventure",
+                createdAt: "2026-06-17T00:00:00.000Z",
+                assistantSummary: "Try Piranesi.",
+                recommendations: [
+                  {
+                    id: "rec-1",
+                    lane: "discovery",
+                    title: "Piranesi",
+                    author: "Susanna Clarke",
+                    rationale: "A strange and wondrous labyrinth.",
+                    matchNotes: ["Wonder"],
+                    caveats: [],
+                    sourceLinks: [],
+                    metadata: { genres: ["Fantasy"], themes: ["Mystery"], description: "A labyrinth mystery." }
+                  }
+                ],
+                preferenceSuggestions: []
+              }
+            ]
+          }
+        ]
+      })
+    );
+
+    const session = loadAppState().sessions[0];
+
+    expect(session.messages).toHaveLength(2);
+    expect(session.messages[0]).toMatchObject({ role: "user", text: "Offbeat adventure" });
+    expect(session.messages[1].role === "assistant" ? session.messages[1].segments[0].type : undefined).toBe("book-link");
+    expect("rounds" in session).toBe(false);
+  });
+
   it("falls back to defaults when stored JSON has malformed optional fields", () => {
     localStorage.setItem(
       STORAGE_KEY,
