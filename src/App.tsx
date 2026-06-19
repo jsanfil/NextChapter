@@ -197,65 +197,68 @@ export default function App() {
       >
         <CanvasTabs activeTab={activeTab} onChange={setActiveTab} />
 
-        <div className="flex-1 overflow-y-auto">
-          {activeTab === "library" ? (
-            <LibraryView
-              books={state.books}
-              linkSources={state.settings.linkSources}
-              onBooksChange={(books) => setState((current) => ({ ...current, books }))}
-              onSelectBook={(bookId) => {
-                setState((current) => ({
-                  ...current,
-                  selectedBookId: bookId,
-                  selectedBookRef: { type: "local", bookId },
-                }));
-                setActiveTab("detail");
-              }}
+        {activeTab === "settings" ? (
+          <div className="flex-1 flex flex-col overflow-hidden">
+            <SettingsView
+              preferences={state.preferences}
+              settings={state.settings}
+              onPreferencesChange={(preferences) =>
+                setState((current) => ({ ...current, preferences }))
+              }
+              onSettingsChange={(settings) =>
+                setState((current) => ({ ...current, settings }))
+              }
             />
-          ) : (
-            <>
-              {activeTab === "sessions" ? (
-                <RecommendationSessionsView
-                  sessions={state.sessions}
-                  activeSessionId={state.activeSessionId}
-                  onSelectSession={(sessionId) => {
-                    const session = state.sessions.find((candidate) => candidate.id === sessionId);
-                    const firstBookLink = firstBookLinkFromSession(session);
-                    setState((current) => ({
-                      ...current,
-                      activeSessionId: sessionId,
-                      selectedBookId: undefined,
-                      selectedBookRef: firstBookLink
-                        ? resolveBookRef(firstBookLink, current.books)
-                        : undefined,
-                    }));
-                    setStatus(session ? `Resumed chat: ${session.title}` : "");
-                    setActiveTab("detail");
-                  }}
-                />
-              ) : null}
-              {activeTab === "detail" ? (
-                <BookDetailPanel
-                  book={selectedBook}
-                  catalog={selectedCatalog}
-                  isLoadingCatalog={isLoadingCatalog}
-                />
-              ) : null}
-              {activeTab === "settings" ? (
-                <SettingsView
-                  preferences={state.preferences}
-                  settings={state.settings}
-                  onPreferencesChange={(preferences) =>
-                    setState((current) => ({ ...current, preferences }))
-                  }
-                  onSettingsChange={(settings) =>
-                    setState((current) => ({ ...current, settings }))
-                  }
-                />
-              ) : null}
-            </>
-          )}
-        </div>
+          </div>
+        ) : (
+          <div className="flex-1 overflow-y-auto">
+            {activeTab === "library" ? (
+              <LibraryView
+                books={state.books}
+                linkSources={state.settings.linkSources}
+                onBooksChange={(books) => setState((current) => ({ ...current, books }))}
+                onSelectBook={(bookId) => {
+                  setState((current) => ({
+                    ...current,
+                    selectedBookId: bookId,
+                    selectedBookRef: { type: "local", bookId },
+                  }));
+                  setActiveTab("detail");
+                }}
+              />
+            ) : (
+              <>
+                {activeTab === "sessions" ? (
+                  <RecommendationSessionsView
+                    sessions={state.sessions}
+                    activeSessionId={state.activeSessionId}
+                    onSelectSession={(sessionId) => {
+                      const session = state.sessions.find((candidate) => candidate.id === sessionId);
+                      const firstBookLink = firstBookLinkFromSession(session);
+                      setState((current) => ({
+                        ...current,
+                        activeSessionId: sessionId,
+                        selectedBookId: undefined,
+                        selectedBookRef: firstBookLink
+                          ? resolveBookRef(firstBookLink, current.books)
+                          : undefined,
+                      }));
+                      setStatus(session ? `Resumed chat: ${session.title}` : "");
+                      setActiveTab("detail");
+                    }}
+                  />
+                ) : null}
+                {activeTab === "detail" ? (
+                  <BookDetailPanel
+                    book={selectedBook}
+                    catalog={selectedCatalog}
+                    isLoadingCatalog={isLoadingCatalog}
+                  />
+                ) : null}
+              </>
+            )}
+          </div>
+        )}
       </section>
     </main>
   );

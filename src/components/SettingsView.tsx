@@ -80,9 +80,9 @@ export default function SettingsView({
     "w-full rounded-xl bg-[--color-input-bg] shadow-sm text-[--color-ink] px-3 py-2 text-sm focus:outline-none transition-colors";
 
   return (
-    <div className="flex flex-col min-h-full">
+    <div className="flex flex-col h-full overflow-hidden">
       {/* ── Scrollable content ── */}
-      <div className="px-7 py-6 space-y-7 flex-1">
+      <div className="px-7 py-6 space-y-7 flex-1 overflow-y-auto">
 
         {/* Reading preferences */}
         <section>
@@ -223,10 +223,10 @@ export default function SettingsView({
         </section>
       </div>
 
-      {/* ── Sticky footer bar ── */}
+      {/* ── Footer bar — always in flow, visible only when dirty ── */}
       <div
         className={[
-          "sticky bottom-0 z-10",
+          "flex-shrink-0",
           "px-7 py-4 flex items-center justify-between gap-3",
           "bg-[--color-panel] border-t border-[--color-border]",
           "transition-all duration-200",
@@ -241,7 +241,7 @@ export default function SettingsView({
           <button
             type="button"
             onClick={handleDiscard}
-            className="text-sm px-4 py-1.5 rounded-full border border-[--color-border] text-[--color-ink-muted] hover:bg-[--color-ghost-btn] transition-colors font-medium"
+            className="text-sm px-4 py-1.5 rounded-full bg-[--color-ghost-btn] text-[--color-ink-muted] hover:opacity-80 transition-opacity font-medium"
           >
             Discard
           </button>
