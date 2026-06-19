@@ -137,7 +137,7 @@ export default function LibraryView({ books, linkSources, catalogCache, onBooksC
         <div className="flex items-center justify-between gap-4">
           <div className="flex items-center gap-2">
             <label className="flex items-center gap-2 cursor-pointer">
-              <span className="text-xs font-medium px-3 py-1.5 rounded-full text-[--color-ink-muted] bg-[--color-ghost-btn] hover:text-[--color-ink] transition-colors whitespace-nowrap cursor-pointer">
+              <span className="text-sm px-4 py-1.5 rounded-full text-[--color-ink] bg-[--color-ghost-btn] shadow-sm hover:bg-[--color-border-mid] transition-colors whitespace-nowrap cursor-pointer">
                 Import Goodreads CSV
               </span>
               <input
