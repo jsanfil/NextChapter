@@ -1,0 +1,93 @@
+<h2>What should NextChapter feel like?</h2>
+<p class="subtitle">Three ways to reset the UI around the native ChatGPT-style experience you described. Click the one that feels closest, then tell me what you like or dislike.</p>
+
+<div class="cards">
+  <div class="card" data-choice="a" onclick="toggleSelect(this)">
+    <div class="card-image">
+      <div class="mockup">
+        <div class="mockup-header">A. Chat-First With Inspector</div>
+        <div class="mockup-body" style="display:grid;grid-template-columns:1.05fr .95fr;gap:14px;min-height:340px">
+          <div style="border-right:1px solid #d8cfc0;padding-right:12px">
+            <div class="label">Chat</div>
+            <p style="font-weight:700;margin:8px 0 6px">Recommend some books for me...</p>
+            <p style="margin:0 0 8px">I took a look through your Goodreads export. You seem happiest when a book is adventurous, imaginative, quirky, and emotionally engaging.</p>
+            <p style="margin:0 0 8px"><a>Piranesi</a> — Susanna Clarke<br><span style="color:#625b52">An endless labyrinth, mystery, wonder, and heart.</span></p>
+            <p style="margin:0 0 8px"><a>Starter Villain</a> — John Scalzi<br><span style="color:#625b52">Light, fast, funny, and strange.</span></p>
+            <p style="margin:0"><a>The Hike</a> — Drew Magary<br><span style="color:#625b52">Surreal, adventurous, and offbeat.</span></p>
+          </div>
+          <div>
+            <div class="label">Right Canvas</div>
+            <h3 style="margin:8px 0 4px">Piranesi</h3>
+            <p style="margin:0;color:#625b52">Susanna Clarke</p>
+            <p style="margin:10px 0">Short metadata, shelf status, and a compact summary appear here when you click a book link in chat.</p>
+            <button class="mock-button">Goodreads</button>
+            <button class="mock-button">Open Library</button>
+            <button class="mock-button">Google Books</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>Chat-First With Inspector</h3>
+      <p>The assistant response is the main UI. Book titles in prose are links; clicking one updates the right canvas with metadata, summary, and source links.</p>
+    </div>
+  </div>
+
+  <div class="card" data-choice="b" onclick="toggleSelect(this)">
+    <div class="card-image">
+      <div class="mockup">
+        <div class="mockup-header">B. Chat Plus Results Board</div>
+        <div class="mockup-body" style="display:grid;grid-template-columns:.9fr 1.1fr;gap:14px;min-height:340px">
+          <div style="border-right:1px solid #d8cfc0;padding-right:12px">
+            <div class="label">Chat Summary</div>
+            <p style="font-weight:700;margin:8px 0 6px">Recommend something adventurous...</p>
+            <p style="margin:0">I found nine good fits. See the cards on the right.</p>
+          </div>
+          <div>
+            <div class="label">Current Results</div>
+            <div style="border:1px solid #d8cfc0;padding:10px;margin:8px 0;background:#fffdf8">
+              <strong>Piranesi</strong><br><span style="color:#625b52">Wonder, mystery, weirdness, heart.</span>
+            </div>
+            <div style="border:1px solid #d8cfc0;padding:10px;margin:8px 0;background:#fffdf8">
+              <strong>Starter Villain</strong><br><span style="color:#625b52">Light, funny, fast.</span>
+            </div>
+            <div style="border:1px solid #d8cfc0;padding:10px;margin:8px 0;background:#fffdf8">
+              <strong>The Hike</strong><br><span style="color:#625b52">Surreal adventure.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>Chat Plus Results Board</h3>
+      <p>Keep the current app direction: chat summarizes, while the canvas owns structured recommendation cards and actions.</p>
+    </div>
+  </div>
+
+  <div class="card" data-choice="c" onclick="toggleSelect(this)">
+    <div class="card-image">
+      <div class="mockup">
+        <div class="mockup-header">C. Native Chat With Drawer</div>
+        <div class="mockup-body" style="display:grid;grid-template-columns:1fr 340px;gap:14px;min-height:340px">
+          <div>
+            <div class="label">Full-Width Chat</div>
+            <p style="font-weight:700;margin:8px 0 6px">Recommend some books for me...</p>
+            <p style="margin:0 0 8px">Here are some adventurous, off-the-beaten-path picks:</p>
+            <p style="margin:0 0 8px"><a>Piranesi</a>, <a>Sourdough</a>, <a>Starter Villain</a>, <a>The Library at Mount Char</a>.</p>
+            <p style="margin:0;color:#625b52">The book panel slides over the chat only when a title is selected.</p>
+          </div>
+          <div style="background:#fffdf8;border-left:1px solid #d8cfc0;padding:12px;box-shadow:-8px 0 16px rgba(0,0,0,.06)">
+            <div class="label">Temporary Drawer</div>
+            <h3 style="margin:8px 0 4px">Starter Villain</h3>
+            <p style="margin:0;color:#625b52">John Scalzi</p>
+            <p style="margin:10px 0">A detail drawer appears over the conversation, then closes when you go back to reading.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>Native Chat With Drawer</h3>
+      <p>Almost everything is chat. Book details are a temporary overlay instead of a persistent side canvas.</p>
+    </div>
+  </div>
+</div>

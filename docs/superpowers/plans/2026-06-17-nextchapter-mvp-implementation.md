@@ -1,6 +1,7 @@
 # NextChapter MVP Implementation Plan
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
+> **Required UI source:** Before making any feature change to the application, read `docs/superpowers/specs/2026-06-19-nextchapter-ui-design-spec.md` and verify the change follows its tokens, component patterns, accessibility conventions, and `## 14. New-Feature Checklist`.
 
 **Goal:** Build the first usable single-user NextChapter web app: import/edit books, chat for explainable recommendations, save iterative sessions, and configure preferences/model/link settings.
 
@@ -13,6 +14,7 @@
 ## File Structure
 
 - Create `docs/superpowers/specs/2026-06-17-nextchapter-ui-design-addendum.md`: approved wireframes, interaction state map, visual direction, and UI implementation rules. This file must exist and be approved before app scaffolding starts.
+- Use `docs/superpowers/specs/2026-06-19-nextchapter-ui-design-spec.md` as the active UI design contract for all future feature changes. The 2026-06-17 UI design addendum is historical context only where it conflicts with the active v0 spec.
 - Create `package.json`: scripts and dependencies.
 - Create `index.html`: Vite HTML entry.
 - Create `tsconfig.json`, `tsconfig.node.json`, `vite.config.ts`, `vitest.setup.ts`: TypeScript, Vite, and test configuration.
@@ -3192,6 +3194,7 @@ Create `docs/manual-qa.md`:
 
 Run `npm run dev`, open the local Vite URL, and verify:
 
+- UI feature changes have been checked against `docs/superpowers/specs/2026-06-19-nextchapter-ui-design-spec.md`, especially the new-feature checklist.
 - The app opens to chat plus library canvas.
 - A Goodreads CSV fixture can be imported through the Library view.
 - The Library view shows read and want-to-read books after import.
@@ -3202,8 +3205,8 @@ Run `npm run dev`, open the local Vite URL, and verify:
 - Sessions shows the saved session and can return to its results.
 - Book Detail opens from a library row.
 - Settings can save reading preferences, model settings, and external link enabled flags.
-- Desktop layout matches the approved UI design addendum: chat is the primary conversational surface and the canvas keeps Library, Sessions, Current Results, and Book Detail visible as primary work areas.
-- Mobile layout matches the approved UI design addendum without horizontal scrolling, text overlap, or unreachable primary actions.
+- Desktop layout matches the active UI design spec: chat is the primary conversational surface, the canvas follows the two-column shell, and the right-column panels use the documented tokens and component patterns.
+- Mobile layout matches the active UI design spec without horizontal scrolling, text overlap, or unreachable primary actions.
 - Settings remains a secondary configuration surface rather than a face-up primary canvas tab in daily recommendation flows.
 - Refreshing the browser preserves imported books, sessions, preferences, and settings.
 ```

@@ -1,21 +1,23 @@
 # NextChapter UI Design Addendum
 
 Date: 2026-06-17
-Status: Superseded 2026-06-19 by chat-first book inspector direction
+Status: Superseded 2026-06-19 by chat-first book inspector direction and active v0 UI design spec
 
 Related documents:
+- `docs/superpowers/specs/2026-06-19-nextchapter-ui-design-spec.md`
 - `docs/superpowers/specs/2026-06-17-nextchapter-requirements-design.md`
 - `docs/superpowers/plans/2026-06-17-nextchapter-mvp-implementation.md`
 
 ## Supersession Note
 
-This addendum is superseded by the revised requirements in `docs/superpowers/specs/2026-06-17-nextchapter-requirements-design.md`. The current product direction is **Chat-First With Book Inspector**:
+This addendum is superseded by the revised requirements in `docs/superpowers/specs/2026-06-17-nextchapter-requirements-design.md` and the active UI implementation contract in `docs/superpowers/specs/2026-06-19-nextchapter-ui-design-spec.md`. The current product direction is **Chat-First With Book Inspector**:
 
 - The chat transcript is the canonical recommendation surface.
 - Assistant responses render recommended book titles as clickable links.
 - The right-hand canvas defaults to selected-book detail: cover, metadata, shelf status, summary, recommendation rationale, user notes, and external source links.
 - Library, Sessions, and Settings remain available as secondary utility views.
 - The old Current Results card-board direction should not drive new implementation work unless explicitly reintroduced.
+- Future feature work must consult the active v0 UI design spec before changing application UI.
 
 The historical wireframes below are retained only as background context.
 

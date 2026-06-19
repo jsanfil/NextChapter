@@ -3,6 +3,19 @@
 Date: 2026-06-17
 Status: Revised 2026-06-19 for chat-first book inspector direction
 
+Related documents:
+- `docs/superpowers/specs/2026-06-19-nextchapter-ui-design-spec.md` — active UI design source of truth for all future feature changes.
+- `docs/superpowers/specs/2026-06-17-nextchapter-ui-design-addendum.md` — historical/superseded wireframe context.
+
+## Agent Requirement
+
+Before making any feature change to the application, Codex or any other agentic
+worker must consult `docs/superpowers/specs/2026-06-19-nextchapter-ui-design-spec.md`.
+New UI work must follow its tokens, layout rules, component patterns,
+accessibility conventions, and new-feature checklist. If a product requirement
+conflicts with the active UI design spec, update the SDD artifacts explicitly
+before implementing the change.
+
 ## Overview
 
 NextChapter is a single-user web app that recommends the next book or books to read. It uses the user's Goodreads reading history, editable local library, saved reading preferences, catalog metadata, and natural-language prompts to produce explainable recommendations.
