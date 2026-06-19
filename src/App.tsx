@@ -174,29 +174,41 @@ export default function App() {
   }
 
   return (
-    <main className="app-shell">
-      <ChatPanel
-        activeSession={activeSession}
-        isLoading={isLoading}
-        error={error}
-        status={status}
-        onSubmitPrompt={submitPrompt}
-        onNewChat={startNewChat}
-        onSaveChat={saveCurrentChat}
-        onSelectBookLink={selectBookLink}
-        onResolvePreferenceSuggestion={resolveSuggestion}
-      />
+    <main className="flex h-screen overflow-hidden bg-[--color-cream]" style={{ gridTemplateColumns: "unset" }}>
+      {/* ── Left: Chat column ── */}
+      <div className="flex-[1.18] min-w-[380px] max-w-[680px] flex flex-col h-screen overflow-hidden">
+        <ChatPanel
+          activeSession={activeSession}
+          isLoading={isLoading}
+          error={error}
+          status={status}
+          onSubmitPrompt={submitPrompt}
+          onNewChat={startNewChat}
+          onSaveChat={saveCurrentChat}
+          onSelectBookLink={selectBookLink}
+          onResolvePreferenceSuggestion={resolveSuggestion}
+        />
+      </div>
 
-      <section className="canvas-panel" aria-label="Library canvas">
+      {/* ── Right: Inspector column ── */}
+      <section
+        className="flex-[0.82] min-w-[320px] flex flex-col h-screen overflow-hidden bg-[--color-panel]"
+        aria-label="Library canvas"
+      >
         <CanvasTabs activeTab={activeTab} onChange={setActiveTab} />
-        <div className="canvas-body">
+
+        <div className="flex-1 overflow-y-auto">
           {activeTab === "library" ? (
             <LibraryView
               books={state.books}
               linkSources={state.settings.linkSources}
               onBooksChange={(books) => setState((current) => ({ ...current, books }))}
               onSelectBook={(bookId) => {
-                setState((current) => ({ ...current, selectedBookId: bookId, selectedBookRef: { type: "local", bookId } }));
+                setState((current) => ({
+                  ...current,
+                  selectedBookId: bookId,
+                  selectedBookRef: { type: "local", bookId },
+                }));
                 setActiveTab("detail");
               }}
             />
@@ -213,7 +225,9 @@ export default function App() {
                       ...current,
                       activeSessionId: sessionId,
                       selectedBookId: undefined,
-                      selectedBookRef: firstBookLink ? resolveBookRef(firstBookLink, current.books) : undefined
+                      selectedBookRef: firstBookLink
+                        ? resolveBookRef(firstBookLink, current.books)
+                        : undefined,
                     }));
                     setStatus(session ? `Resumed chat: ${session.title}` : "");
                     setActiveTab("detail");
@@ -221,14 +235,22 @@ export default function App() {
                 />
               ) : null}
               {activeTab === "detail" ? (
-                <BookDetailPanel book={selectedBook} catalog={selectedCatalog} isLoadingCatalog={isLoadingCatalog} />
+                <BookDetailPanel
+                  book={selectedBook}
+                  catalog={selectedCatalog}
+                  isLoadingCatalog={isLoadingCatalog}
+                />
               ) : null}
               {activeTab === "settings" ? (
                 <SettingsView
                   preferences={state.preferences}
                   settings={state.settings}
-                  onPreferencesChange={(preferences) => setState((current) => ({ ...current, preferences }))}
-                  onSettingsChange={(settings) => setState((current) => ({ ...current, settings }))}
+                  onPreferencesChange={(preferences) =>
+                    setState((current) => ({ ...current, preferences }))
+                  }
+                  onSettingsChange={(settings) =>
+                    setState((current) => ({ ...current, settings }))
+                  }
                 />
               ) : null}
             </>
@@ -332,13 +354,4 @@ function findMatchingBook(target: BookLinkTarget, books: Book[]): Book | undefin
   return books.find((book) => book.title.trim().toLowerCase() === title && book.author.trim().toLowerCase() === author);
 }
 
-function tabTitle(tab: CanvasTab): string {
-  const titles: Record<CanvasTab, string> = {
-    detail: "Book Detail",
-    library: "Library",
-    sessions: "Recommendation Sessions",
-    settings: "Settings"
-  };
 
-  return titles[tab];
-}
