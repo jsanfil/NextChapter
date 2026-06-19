@@ -74,6 +74,11 @@ select {
 }
 
 
+/* ── Session entry hover ── */
+.session-entry-btn:hover {
+  background-color: var(--color-cream);
+}
+
 /* ── Scrollbars (subtle) ── */
 ::-webkit-scrollbar {
   width: 5px;

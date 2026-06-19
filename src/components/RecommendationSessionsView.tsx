@@ -34,18 +34,18 @@ export default function RecommendationSessionsView({
               key={session.id}
               type="button"
               onClick={() => onSelectSession(session.id)}
-              className={[
-                "w-full text-left flex items-start justify-between gap-4 px-3.5 py-3 rounded-xl transition-colors group",
-                isActive
-                  ? "bg-[--color-ghost-btn]"
-                  : "hover:bg-[--color-cream]",
-              ].join(" ")}
+              className="w-full text-left flex items-start justify-between gap-4 px-3.5 py-3 rounded-xl transition-colors group session-entry-btn"
+              style={{
+                backgroundColor: isActive
+                  ? "var(--color-ghost-btn)"
+                  : undefined,
+              }}
             >
               <div className="min-w-0 space-y-0.5">
-                <p className={[
-                  "text-sm font-medium truncate m-0 transition-colors",
-                  isActive ? "text-[--color-espresso]" : "text-[--color-ink] group-hover:text-[--color-espresso]",
-                ].join(" ")}>
+                <p
+                  className="text-sm font-medium truncate m-0 transition-colors"
+                  style={{ color: isActive ? "var(--color-espresso)" : undefined }}
+                >
                   {session.title}
                 </p>
                 <p className="text-xs text-[--color-ink-muted] m-0">
